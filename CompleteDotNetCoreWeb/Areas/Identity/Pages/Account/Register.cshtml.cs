@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -130,21 +131,21 @@ namespace CompleteDotNetCoreWeb.Areas.Identity.Pages.Account
             public IEnumerable<SelectListItem> CompanyList { get; set; }
         }
 
-
+         
         public async Task OnGetAsync(string returnUrl = null)
         {
             // Instructor's alternative to await...
-            //_roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin))
-            //    .GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin))
+                .GetAwaiter().GetResult();
 
-            // Code I used instead of  instructor's... commented out for deployment.
-            //if (!_roleManager.RoleExistsAsync(SD.RoleAdmin).GetAwaiter().GetResult())
-            //{
-            //    await _roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin));
-            //    await _roleManager.CreateAsync(new IdentityRole(SD.RoleEmployee));
-            //    await _roleManager.CreateAsync(new IdentityRole(SD.RoleUserComp));
-            //    await _roleManager.CreateAsync(new IdentityRole(SD.RoleUserIndv));
-            //}
+           // Code I used instead of instructor's... commented out for deployment.
+            if (!_roleManager.RoleExistsAsync(SD.RoleAdmin).GetAwaiter().GetResult())
+            {
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin));
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleEmployee));
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleUserComp));
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleUserIndv));
+            }
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             Input = new InputModel()
